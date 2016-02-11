@@ -1,2 +1,6 @@
 # anarchia
-Anarchia Microservices Starter Kit
+![Anarchia Logo](anarchia.png)
+
+Anarchia µ-services starter kit
+
+

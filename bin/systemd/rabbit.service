@@ -1,0 +1,29 @@
+[Unit]
+Description=Rabbit MQ
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment="IMAGE=rabbitmq:3-management"
+Environment="CONTAINER=rabbitmq"
+
+TimeoutStartSec=0
+User=core
+
+ExecStartPre=-/usr/bin/docker  kill $CONTAINER
+ExecStartPre=-/usr/bin/docker  rm   $CONTAINER
+ExecStartPre=/usr/bin/docker   pull $IMAGE
+
+ExecStart=/usr/bin/docker      run  --hostname %H --name $CONTAINER \
+                 --add-host ami-01:172.17.8.101 \
+                 --add-host ami-02:172.17.8.102 \
+                 --add-host ami-03:172.17.8.103 \
+                 -p 8080:15672 -p 4369:4369 -p 5671:5671 -p 5672:5672 -p 25672:25672  \
+                 -e RABBITMQ_ERLANG_COOKIE='tokensupersegreto' \
+                 $IMAGE
+
+ExecStop=/usr/bin/docker       stop $CONTAINER
+
+[X-Fleet]
+Global=true

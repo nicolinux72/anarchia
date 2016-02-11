@@ -1,0 +1,144 @@
+#!/bin/bash
+//usr/bin/env groovy  -d  "$0" $@; exit $?
+
+import java.util.List
+import groovy.sql.Sql
+import java.sql.Types
+import java.sql.DatabaseMetaData
+import groovy.io.FileType
+import java.text.DecimalFormat
+import static groovy.io.FileType.FILES
+//import groovyx.net.http.ContentType
+
+//import groovyx.net.http.HTTPBuilder
+//import static groovyx.net.http.Method.PUT
+//import static groovyx.net.http.ContentType.JSON
+
+anarchiaHome = '/anarchia'
+conf = [ fleetctl: "$anarchiaHome/bin/fleetctl --tunnel 172.17.8.101 " ]
+
+
+if (args.size() > 0) {
+	if (args[0] == 'start' && args.size() == 2) {
+		start(args[1], "$System.env.GO_DEPENDENCY_LABEL_IMMAGINEDOCKER")
+		System.exit(0)
+	}
+	else if (args[0] == 'start' && args.size() == 3) {
+		"$System.env.GO_PIPELINE_LABEL"
+		start(args[1], args[2])
+		System.exit(0)
+	}
+
+	else if (args[0] == 'list-units' && args.size() == 1) {
+		printUnits()
+		System.exit(0)
+	}
+
+	else if (args[0] == 'find' && args.size() == 2) {
+		findUnits(args[1])
+		System.exit(0)
+	}
+
+	else if (args[0] == 'submit' && args.size() == 3) {
+		submit(args[1], args[2])
+		System.exit(0)
+	}
+}
+
+//println "$System.env.GO_PIPELINE_LABEL"
+//println "$System.env.GO_DEPENDENCY_LABEL_IMMAGINEDOCKER"
+//println  args
+
+println "teleporter - 2013 Nicola Santi\n"
+println "Usage: teleporter deploy unit"
+
+System.exit(1)
+
+
+public class UnitInfo {
+	String unit
+	String node
+	String version
+	String status
+	String status2
+}
+
+def listUnits() {
+	def units = []
+	def text = execute("$conf.fleetctl list-units")
+
+	text.split("\n").each {
+		def row = it.split("\t")
+		if ( row[0] == 'UNIT' ) return
+		
+		def version = null 	
+		def m = row[0] =~ '.*@(.*)\\.service'
+		
+		if (m.matches()) { version = m[0][1]} 
+		units << new UnitInfo(unit:row[0], version:version, node:row[-3], status:row[-2], status2:row[-1] )
+	}
+	
+	units
+}
+
+def findUnits(nome) {
+	listUnits().findAll {  it.unit ==~/${nome}.*/ }
+}
+
+def printUnits() {
+	listUnits().each {
+		println "$it.node $it.status $it.status $it.unit ($it.version)"
+	}	
+}
+
+def stop(name, version) {
+	def unit = "$name@${version}.service"
+	execute("$conf.fleetctl stop $unit")
+}
+
+def destroy(name, version) {
+	def unit = "$name@${version}.service"
+	if (findUnits(unit).size() > 0) {
+		execute("$conf.fleetctl destroy $unit")
+		 sleep(3000)
+	}
+}
+
+def start(name, version) {
+	destroy(name, version)
+	def unit = "$name@${version}.service"
+	execute("$conf.fleetctl start $unit")
+}
+
+def execute(cmd) { 
+	println cmd
+	def process = cmd.execute()
+	def text = process.text
+	println text
+	process.waitFor()
+	def result = process.exitValue()
+	if (result!=0) {
+	  println process.err.text	
+	  throw new RuntimeException("Errore eseguendo il comando: ${cmd}")
+	}
+	
+	text 
+}
+
+def execute(List<String> cmds) {
+	cmds.each { execute(it) }
+}
+
+def writeUnifFile(name, version) {
+	def text = new File("$anarchiaHome/templates/fragments/check-in/micro.service").text
+	text = text.replaceAll(/\$\{project\}/, "$name")
+	text = text.replaceAll(/\$.esc/, 'anarchia µ-service')
+	println text
+	new File("/tmp/$name@.service") << text
+}
+
+def submit(name, version) {
+	def unitFile = "/tmp/$name@.service"
+	writeUnifFile(name, version)
+	def process = "$conf.fleetctl submit $unitFile".execute()
+}

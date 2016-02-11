@@ -1,0 +1,30 @@
+[Unit]
+Description=Spring Cloud Eureka Server
+After=configserver.service
+Requires=docker.service
+Wants=configserver.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment="IMAGE=anarchia-registry:5000/eureka:1.1.0-SNAPSHOT"
+Environment="CONTAINER=eureka"
+
+TimeoutStartSec=0
+User=core
+
+ExecStartPre=-/usr/bin/docker  kill $CONTAINER
+ExecStartPre=-/usr/bin/docker  rm   $CONTAINER
+ExecStartPre=/usr/bin/docker   pull $IMAGE
+
+ExecStart=/usr/bin/docker      run   --name $CONTAINER -p 8761:8761  \
+                 -h %H \
+                 -v  /home/core/log:/log \
+                 -e "logging.file=/log/eureka-1.1.0-SNAPSHOT@8761.log"   \
+                 -e "spring.profiles.active=dev" \
+                 -e "COREOS_PUBLIC_IPV4=${COREOS_PUBLIC_IPV4}" \
+                 $IMAGE
+
+ExecStop=/usr/bin/docker       stop $CONTAINER
+
+[X-Fleet]
+Global=true

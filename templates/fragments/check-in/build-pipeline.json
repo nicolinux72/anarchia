@@ -1,0 +1,229 @@
+
+{ "group": "first",
+"pipeline": {
+  "label_template": "1.0.\${COUNT}",
+  "enable_pipeline_locking": false,
+  "name": "${pipelineName}",
+  "template": null,
+  "parameters": [
+
+  ],
+  "environment_variables": [
+
+  ],
+  "materials": [
+    {
+      "type": "git",
+      "attributes": {
+        "url": "$gitPath",
+        "destination": null,
+        "filter": null,
+        "name": null,
+        "auto_update": true,
+        "branch": "master",
+        "submodule_folder": null
+      }
+    }
+  ],
+  "stages": [
+    {
+      "name": "build",
+      "fetch_materials": true,
+      "clean_working_directory": false,
+      "never_cleanup_artifacts": false,
+      "approval": {
+        "type": "success",
+        "authorization": {
+          "roles": [
+
+          ],
+          "users": [
+
+          ]
+        }
+      },
+      "environment_variables": [
+
+      ],
+      "jobs": [
+        {
+          "name": "defaultJob",
+          "run_instance_count": null,
+          "timeout": null,
+          "environment_variables": [
+
+          ],
+          "resources": [
+
+          ],
+          "tasks": [
+            {
+              "type": "pluggable_task",
+              "attributes": {
+                "run_if": [
+
+                ],
+                "on_cancel": null,
+                "plugin_configuration": {
+                  "id": "gradle.task.plugin",
+                  "version": "1.0.4-SNAPSHOT"
+                },
+                "configuration": [
+                  {
+                    "key": "Offline",
+                    "value": ""
+                  },
+                  {
+                    "key": "MakeWrapperExecutable",
+                    "value": "true"
+                  },
+                  {
+                    "key": "UseWrapper",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Tasks",
+                    "value": "clean build"
+                  },
+                  {
+                    "key": "Debug",
+                    "value": ""
+                  },
+                  {
+                    "key": "AdditionalOptions",
+                    "value": ""
+                  },
+                  {
+                    "key": "Deamon",
+                    "value": ""
+                  },
+                  {
+                    "key": "GradleHome",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          ],
+          "tabs": [
+
+          ],
+          "artifacts": [
+            {
+              "source": "build/libs/$jarName",
+              "destination": "$projectName",
+              "type": "build"
+            }
+          ],
+          "properties": null
+        }
+      ]
+    },
+    {
+      "name": "dockerImage",
+      "fetch_materials": true,
+      "clean_working_directory": false,
+      "never_cleanup_artifacts": false,
+      "approval": {
+        "type": "success",
+        "authorization": {
+          "roles": [
+
+          ],
+          "users": [
+
+          ]
+        }
+      },
+      "environment_variables": [
+
+      ],
+      "jobs": [
+        {
+          "name": "buildImage",
+          "run_instance_count": null,
+          "timeout": null,
+          "environment_variables": [
+
+          ],
+          "resources": [
+
+          ],
+          "tasks": [
+            {
+              "type": "fetch",
+              "attributes": {
+                "run_if": [
+                  "passed"
+                ],
+                "on_cancel": null,
+                "pipeline": "${pipelineName}",
+                "stage": "build",
+                "job": "defaultJob",
+                "is_source_a_file": true,
+                "source": "$projectName/$jarName",
+                "destination": "build/libs/$jarName"
+              }
+            },
+            {
+              "type": "pluggable_task",
+              "attributes": {
+                "run_if": [
+                 "passed"      
+                 ], "on_cancel": null,
+                "plugin_configuration": {
+                  "id": "gradle.task.plugin",
+                  "version": "1.0.4-SNAPSHOT"
+                },
+                "configuration": [
+                  {
+                    "key": "Offline",
+                    "value": ""
+                  },
+                  {
+                    "key": "MakeWrapperExecutable",
+                    "value": "true"
+                  },
+                  {
+                    "key": "UseWrapper",
+                    "value": "true"
+                  },
+                  {
+                    "key": "Tasks",
+                    "value": "buildImage"
+                  },
+                  {
+                    "key": "Debug",
+                    "value": ""
+                  },
+                  {
+                    "key": "AdditionalOptions",
+                    "value": ""
+                  },
+                  {
+                    "key": "Deamon",
+                    "value": ""
+                  },
+                  {
+                    "key": "GradleHome",
+                    "value": ""
+                  }
+                ]
+              }
+            }
+          ],
+          "tabs": [
+
+          ],
+          "artifacts": [
+
+          ],
+          "properties": null
+        }
+      ]
+    }
+  ],
+  "tracking_tool": null,
+  "timer": null
+}
+}

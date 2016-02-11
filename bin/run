@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# stop, destroy then run again a 
+# service unit
+
+UNIT=/anarchia/bin/systemd/$1.service
+
+if [ -f "$UNIT" ]
+then
+	echo "Anarchia Run Utility" 
+else
+	echo "Can't found unit file $UNIT" 
+	exit
+fi
+
+echo stop $1
+fleetctl stop $1
+sleep 3
+echo destroy $1
+fleetctl destroy $1
+sleep 3
+echo start $UNIT
+fleetctl start $UNIT
+
+if [ -z "$2" ]
+then
+fleetctl list-unit-files
+fleetctl list-units
+
+journalctl -f -u $1
+fi

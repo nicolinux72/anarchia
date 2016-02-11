@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# resolve links - $0 may be a soft-link
+PRG="$0"
+
+while [ -h "$PRG" ] ; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`/"$link"
+    fi
+done
+
+DIRNAME=`dirname "$PRG"`
+export MSBIN=`pwd "$DIRNAME"`
+
+echo Starting mshell from bash file: $MSBIN
+echo Starting mshell from bash file: $DIRNAME
+echo " "
+
+file="$DIRNAME/../mshell/build/libs/mshell.jar"
+
+if [ -f "$file" ]
+then
+	java -jar "$DIRNAME/../mshell/build/libs/mshell.jar" "$@" 
+	#java -jar "$DIRNAME/../mshell/target/mshell-1.0.2.RELEASE.jar" "$@" 
+else
+	echo "Can't found mshell jar in path $file" 
+	echo " "
+	echo "Please build it with:"
+	echo "cd ../mshell"
+	echo "./gradlew build"
+fi
+
+
+

@@ -1,0 +1,26 @@
+[Unit]
+Description=$desc
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment="IMAGE=localhost:5000/${project}:%i"
+Environment="CONTAINER=${project}"
+
+TimeoutStartSec=0
+User=core
+
+ExecStartPre=-/usr/bin/docker  kill \$CONTAINER
+ExecStartPre=-/usr/bin/docker  rm   \$CONTAINER
+ExecStartPre=/usr/bin/docker   pull \$IMAGE
+
+ExecStart=/usr/bin/docker      run   --name \$CONTAINER -p  :8080 \\
+                 -v /home/core/log:/log \\
+                 -e "logging.file=/log/${project}-%i@0000.log"   \\
+                 \$IMAGE
+
+ExecStop=/usr/bin/docker       stop \$CONTAINER
+
+[X-Fleet]
+Global=true

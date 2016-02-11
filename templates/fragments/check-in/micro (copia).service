@@ -1,0 +1,29 @@
+[Unit]
+Description=$desc
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment="IMAGE=quay.io/nicolinux72/${project}"
+Environment="CONTAINER=${project}"
+
+TimeoutStartSec=0
+User=core
+
+ExecStartPre=-/usr/bin/docker  kill \$CONTAINER
+ExecStartPre=-/usr/bin/docker  rm   \$CONTAINER
+ExecStartPre=/usr/bin/docker   pull \$IMAGE
+
+ExecStart=/usr/bin/docker      run   --name \$CONTAINER -p %i:8080 -v /vagrant/coreos/log:/log \\ 
+                 -e "logging.file=/log/docker-%H-%i.log"   \\
+                 \$IMAGE
+
+ExecStop=/usr/bin/docker       stop \$CONTAINER
+
+
+ExecStartPost=/vagrant/bin/vctl --vulcan http://172.17.8.101:8182 server upsert -b ${project} -id %H-%i -url http://\${COREOS_PUBLIC_IPV4}:%i
+ExecStopPost=/vagrant/bin/vctl  --vulcan http://172.17.8.101:8182 server rm     -b ${project} -id %H-%i
+
+[X-Fleet]
+Global=true

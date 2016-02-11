@@ -1,0 +1,22 @@
+#!/bin/bash
+
+/anarchia/bin/run logstash batch
+sleep 20
+
+/anarchia/bin/run rabbit batch
+sleep 30
+
+#/anarchia/bin/run registry batch
+#sleep 20
+
+/anarchia/bin/run configserver batch
+sleep 60
+
+/anarchia/bin/run eureka batch
+sleep 60
+
+/anarchia/bin/run zuul batch
+#sleep 60
+
+
+

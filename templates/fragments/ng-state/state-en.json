@@ -1,0 +1,6 @@
+{
+    "${state}": {
+        "title": "${State}",
+        "desc": "You are entered in state: ${State}"
+    }
+}

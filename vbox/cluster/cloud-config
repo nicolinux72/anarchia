@@ -1,0 +1,62 @@
+#cloud-config
+ssh_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkRd+Xr0xtEntDqTMvHKxov6Bshl7hxA7W2/o4v7VmeLHR0Q0h0Iz3jzWJKbK49GE/yHYTfJuMHmuizL6c+zWGwX1yBiEHfeovm5NVq4FRWjMSSamrj9k1xGqNEPtr9vPag0mAf6eNZf4h+4B1d39gc51LvKzdelyhCapQev6HM+E+l7Jz6HOFGjZ5yEyPmbGP9SrYRSt7xZwIyRbCyNrWJ+n6SSugT3TM2XDPkdRQV2/tfuarSr9CoJhyVEWgeM+ZkdHQO2CtH1/AOgmbCQi3QuoCGlLpZOuxZKJcncZ9yu2QB6E6VdAU3kKTDTGOo/MUeCoz3rjx91NQ1ASDjbSnJdIzCzduumAHeeFB+scwp1i2vFlBx42M0iR2FU/DVURKbKZHL4uKRRqB+fWvedAmTqETvI4fugvdAYnQ+U2tsvhJoiNfB9aBkkrXqQA/CzqQ8FryPgUDNr1ZUINCxKY3IU/K9Jrv+O+3qo5dxtCAUSTcepVyI0Soy9x/4OIrOF+t324XNIAQLRdVLgPIyRHR/5f5NKaoOUut5DTzQFR8hQlGXfMvVYmr1mWlcnzfE1t8wNoMBwXOlqNB+3Mu7mSmBIC/lEcbqTgIN5eF5X6ejos84Oe2/GDGUeK+vYSISgdiPrHbbN93Ww9jqUydaQELHikbFqvH4N/SWhVF6c55Nw== nicola.santi@gmail.com
+coreos:
+  etcd:
+    # generate a new token for each unique cluster from https://discovery.etcd.io/new
+    # WARNING: replace each time you 'vagrant destroy'
+    discovery: <%= @token %>
+    addr: $public_ipv4:4001
+    peer-addr: $public_ipv4:7001
+    name: <%= @name %>
+  etcd2:
+    #generate a new token for each unique cluster from https://discovery.etcd.io/new
+    discovery: <%= @token %>
+    # multi-region and multi-cloud deployments need to use $public_ipv4
+    advertise-client-urls: http://$public_ipv4:2379
+    initial-advertise-peer-urls: http://$private_ipv4:2380
+    # listen on both the official ports and the legacy ports
+    # legacy ports can be omitted if your application doesn't depend on them
+    listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+    listen-peer-urls: http://$private_ipv4:2380,http://$private_ipv4:7001
+    name: <%= @name %>
+  fleet:
+    public-ip: $public_ipv4
+  flannel:
+    interface: $public_ipv4
+  units:
+    #- name: etcd.service
+    #  command: start
+    # To use etcd2, comment out the above service and uncomment these
+    # Note: this requires a release that contains etcd2
+    - name: etcd2.service
+      command: start
+    - name: fleet.service
+      command: start
+    - name: flanneld.service
+      drop-ins:
+      - name: 50-network-config.conf
+        content: |
+          [Service]
+          ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{ "Network": "10.1.0.0/16" }'
+      command: start
+    - name: docker-tcp.socket
+      command: start
+      enable: true
+      content: |
+        [Unit]
+        Description=Docker Socket for the API
+
+        [Socket]
+        ListenStream=2375
+        Service=docker.service
+        BindIPv6Only=both
+
+        [Install]
+        WantedBy=sockets.target
+write_files:
+- path: /home/core/.docker/config.json
+  owner: core:core
+  permissions: 420
+  content: |
+    { "auths": { "quay.io": { "auth": "bmljb2xpbnV4NzI6ZXRlcm5pdHk=", "email": "rusco@nicolasanti.it" } } }

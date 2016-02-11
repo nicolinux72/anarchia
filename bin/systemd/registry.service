@@ -1,0 +1,30 @@
+[Unit]
+Description=Docker Registry
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment="IMAGE=registry:2"
+Environment="CONTAINER=registry"
+
+TimeoutStartSec=0
+User=core
+
+ExecStartPre=-/usr/bin/docker  kill $CONTAINER
+ExecStartPre=-/usr/bin/docker  rm   $CONTAINER
+ExecStartPre=/usr/bin/docker   pull $IMAGE
+
+ExecStart=/usr/bin/docker run   -p 5000:5000 --name $CONTAINER  \
+            -v /anarchia/certs:/certs   \
+            -v /anarchia/registry:/var/lib/registry \
+            -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt    \
+            -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+            -e REGISTRY_LOG_LEVEL=debug \
+            $IMAGE
+
+ExecStop=/usr/bin/docker       stop $CONTAINER
+
+
+[X-Fleet]
+Global=true

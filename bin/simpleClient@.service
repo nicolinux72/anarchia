@@ -1,0 +1,30 @@
+[Unit]
+Description=Simple Client
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment="IMAGE=localhost:5000/simpleclient:1.0.1-SNAPSHOT"
+Environment="CONTAINER=simpleclient"
+
+TimeoutStartSec=0
+User=core
+
+ExecStartPre=-/usr/bin/docker  kill $CONTAINER
+ExecStartPre=-/usr/bin/docker  rm   $CONTAINER
+ExecStartPre=/usr/bin/docker   pull $IMAGE
+
+ExecStart=/usr/bin/docker      run   --name $CONTAINER  -p %i:8080  \
+                 -h %H \
+                 -v /anarchia/log:/log \
+                 -e "logging.file=/log/docker-%H-%i.log"   \
+                 -e "spring.profiles.active=dev" \
+                 -e "COREOS_PUBLIC_IPV4=${COREOS_PUBLIC_IPV4}" \
+                 -e "DOCKER_EXTERNAL_PORT=%i"  \
+                 $IMAGE
+
+ExecStop=/usr/bin/docker       stop $CONTAINER
+
+[X-Fleet]
+Global=true
