@@ -6,6 +6,7 @@
 
 #questo richiede una risposta...
 sdk install groovy 2.4.3
+sdk d  groovy 2.4.3
 
 #sdk man per spring cli spring boot
 #curl -s http://get.sdkman.io | bash

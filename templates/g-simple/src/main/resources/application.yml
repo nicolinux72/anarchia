@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+info:
+  component: Anarchia Simple Groovy Client
+

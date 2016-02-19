@@ -26,6 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :shell, :inline => "/home/vagrant/elasticsearch-2.2.0/bin/elasticsearch &", privileged: false, run: "always"
   config.vm.provision :shell, :inline => "/anarchia/bin/services/turbine.sh", privileged: false, run: "always"
   config.vm.provision :shell, :inline => "/anarchia/bin/services/hystrix-dashboard.sh", privileged: false, run: "always"
+  config.vm.provision :shell, :inline => "su go -c /anarchia/vbox/viewpoint/setup-ssh-agent.sh", privileged: true, run: "always"
  
   config.vm.provider "virtualbox" do |v|
     v.memory = 5512

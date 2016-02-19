@@ -37,16 +37,33 @@ usermod -aG docker vagrant
 apt-get install -y git
 
 #go cd  /var/lib/go-server
-dpkg -i /anarchia/lib/go/go-server-15.3.1-2777.deb
-dpkg -i /anarchia/lib/go/go-agent-15.3.1-2777.deb
+cd /tmp
+wget https://download.go.cd/binaries/16.1.0-2855/deb/go-server-16.1.0-2855.deb
+wget https://download.go.cd/binaries/16.1.0-2855/deb/go-agent-16.1.0-2855.deb
+
+dpkg -i /tmp/go-server-16.1.0-2855.deb
+dpkg -i /tmp/go-agent-16.1.0-2855.deb
+cp /anarchia/lib/go/gocd-gradle-plugin-1.0.4.jar /var/lib/go-server/plugins/external/
+chown go.go /var/lib/go-server/plugins/external/gocd-gradle-plugin-1.0.4.jar
+
+gpasswd -a go  docker
+service docker restart
+
 /etc/init.d/go-agent start
 /etc/init.d/go-server start
+
+sudo su go -c /anarchia/vbox/viewpoint/setup-groovy.sh
 
 #add fleetd tunnel
 #ssh -i certs/insecure_private_key  core@172.17.8.101
 eval `ssh-agent -s`
-ssh-add /anarchia/certs/insecure_private_key 
+ssh-add /anarchia/certs/id_rsa_anarchia 
+chmod o+r /anarchia/certs/id_rsa_anarchia_go
 #/anarchia/bin/fleetctl --tunnel 172.17.8.101 list-units
+
+
+
+
 
 # aggiungo le chiavi per il docker registry
 mkdir -p /etc/docker/certs.d/anarchia-registry:5000
@@ -54,3 +71,4 @@ cp /anarchia/certs/domain.crt /etc/docker/certs.d/anarchia-registry:5000/ca.crt
 
 #pagina di cortesia
 cp /anarchia/vbox/viewpoint/index.html /var/www/html
+

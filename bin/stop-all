@@ -1,0 +1,20 @@
+#!/bin/bash
+
+fleetctl stop logstash 
+sleep 3
+
+fleetctl stop rabbit 
+sleep 5
+
+#fleetctl stop registry 
+#sleep 3
+
+fleetctl stop configserver 
+sleep 5
+
+fleetctl stop eureka 
+sleep 5
+
+fleetctl stop zuul 
+#sleep 5
+

@@ -14,7 +14,7 @@ while [ -h "$PRG" ] ; do
 done
 
 DIRNAME=`dirname "$PRG"`
-export MSBIN=`pwd "$DIRNAME"`
+export MSBIN="$DIRNAME"
 
 echo Starting mshell from bash file: $MSBIN
 echo Starting mshell from bash file: $DIRNAME

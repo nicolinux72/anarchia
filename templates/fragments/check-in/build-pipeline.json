@@ -1,5 +1,5 @@
 
-{ "group": "first",
+{ "group": "anarchia",
 "pipeline": {
   "label_template": "1.0.\${COUNT}",
   "enable_pipeline_locking": false,
@@ -47,7 +47,7 @@
       ],
       "jobs": [
         {
-          "name": "defaultJob",
+          "name": "build",
           "run_instance_count": null,
           "timeout": null,
           "environment_variables": [
@@ -111,7 +111,7 @@
           "artifacts": [
             {
               "source": "build/libs/$jarName",
-              "destination": "$projectName",
+              "destination": "$jarName",
               "type": "build"
             }
           ],
@@ -159,9 +159,9 @@
                 "on_cancel": null,
                 "pipeline": "${pipelineName}",
                 "stage": "build",
-                "job": "defaultJob",
+                "job": "build",
                 "is_source_a_file": true,
-                "source": "$projectName/$jarName",
+                "source": "$jarName",
                 "destination": "build/libs/$jarName"
               }
             },

@@ -14,31 +14,30 @@ import static groovy.io.FileType.FILES
 //import static groovyx.net.http.Method.PUT
 //import static groovyx.net.http.ContentType.JSON
 
+println "teleporter - 2013 Nicola Santi\n"
+
 anarchiaHome = '/anarchia'
-conf = [ fleetctl: "$anarchiaHome/bin/fleetctl --tunnel 172.17.8.101 " ]
+conf = [ fleetctl: "$anarchiaHome/bin/fleetctl --tunnel 172.17.8.101 ",
+         systemd:  "$anarchiaHome/work/systemd"]
 
 
 if (args.size() > 0) {
 	if (args[0] == 'start' && args.size() == 2) {
-		start(args[1], "$System.env.GO_DEPENDENCY_LABEL_IMMAGINEDOCKER")
+		start(args[1], "$System.env.GO_PIPELINE_LABEL")
 		System.exit(0)
 	}
 	else if (args[0] == 'start' && args.size() == 3) {
-		"$System.env.GO_PIPELINE_LABEL"
 		start(args[1], args[2])
 		System.exit(0)
 	}
-
 	else if (args[0] == 'list-units' && args.size() == 1) {
 		printUnits()
 		System.exit(0)
 	}
-
 	else if (args[0] == 'find' && args.size() == 2) {
 		findUnits(args[1])
 		System.exit(0)
 	}
-
 	else if (args[0] == 'submit' && args.size() == 3) {
 		submit(args[1], args[2])
 		System.exit(0)
@@ -49,8 +48,12 @@ if (args.size() > 0) {
 //println "$System.env.GO_DEPENDENCY_LABEL_IMMAGINEDOCKER"
 //println  args
 
-println "teleporter - 2013 Nicola Santi\n"
 println "Usage: teleporter deploy unit"
+println "start service version \trun service on cluster"
+println "list-units \t\t\tlist running units"
+println "find\t\t\tfind service"
+println "submit"
+
 
 System.exit(1)
 
@@ -92,20 +95,23 @@ def printUnits() {
 }
 
 def stop(name, version) {
-	def unit = "$name@${version}.service"
+	def unit = "$name@${version}"
 	execute("$conf.fleetctl stop $unit")
+	sleep(5000) 
 }
 
 def destroy(name, version) {
-	def unit = "$name@${version}.service"
-	if (findUnits(unit).size() > 0) {
-		execute("$conf.fleetctl destroy $unit")
-		 sleep(3000)
-	}
+	def unit = "$name@${version}"
+	//if (findUnits(unit).size() > 0) {
+	execute("$conf.fleetctl destroy $unit")
+	sleep(5000) 
+	//}
 }
 
 def start(name, version) {
+	stop(name, version)
 	destroy(name, version)
+	submit(name,version)
 	def unit = "$name@${version}.service"
 	execute("$conf.fleetctl start $unit")
 }
@@ -118,11 +124,12 @@ def execute(cmd) {
 	process.waitFor()
 	def result = process.exitValue()
 	if (result!=0) {
-	  println process.err.text	
-	  throw new RuntimeException("Errore eseguendo il comando: ${cmd}")
+	  println "Errore eseguendo il comando: ${cmd}"
+	  //println process.err.text	
+	  //throw new RuntimeException("Errore eseguendo il comando: ${cmd}")
 	}
 	
-	text 
+	println text 
 }
 
 def execute(List<String> cmds) {
@@ -138,7 +145,8 @@ def writeUnifFile(name, version) {
 }
 
 def submit(name, version) {
-	def unitFile = "/tmp/$name@.service"
-	writeUnifFile(name, version)
-	def process = "$conf.fleetctl submit $unitFile".execute()
+	def unitFile = "$conf.systemd/$name@.service"
+	//writeUnifFile(name, version)
+	execute("$conf.fleetctl submit $unitFile")
+
 }

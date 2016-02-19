@@ -2,11 +2,12 @@
 Description=$desc
 After=docker.service
 Requires=docker.service
+Wants=configserver.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="IMAGE=localhost:5000/${project}:%i"
-Environment="CONTAINER=${project}"
+Environment="IMAGE=anarchia-registry:5000/${project}:%i"
+Environment="CONTAINER=${project}${instance}"
 
 TimeoutStartSec=0
 User=core
@@ -16,8 +17,11 @@ ExecStartPre=-/usr/bin/docker  rm   \$CONTAINER
 ExecStartPre=/usr/bin/docker   pull \$IMAGE
 
 ExecStart=/usr/bin/docker      run   --name \$CONTAINER -p  :8080 \\
-                 -v /home/core/log:/log \\
+                 -h %H \\
+                 -v  /home/core/log:/log \\
                  -e "logging.file=/log/${project}-%i@0000.log"   \\
+                 -e "spring.profiles.active=dev" \\
+                 -e "COREOS_PUBLIC_IPV4=\${COREOS_PUBLIC_IPV4}" \\
                  \$IMAGE
 
 ExecStop=/usr/bin/docker       stop \$CONTAINER

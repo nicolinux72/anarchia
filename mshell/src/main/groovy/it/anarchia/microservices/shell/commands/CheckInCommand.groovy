@@ -47,7 +47,11 @@ class CheckInCommand
 		 try {writeSystemdServices(projectName, desc, 0) } catch (RuntimeException e) { io.err.println e.message}
 				 
 		 io.out.println "- create go cd pipeline"
-		 try {createGoBuildPipieline(projectName) } catch (RuntimeException e) { io.err.println e.message}
+		 try {
+			 createGoBuildPipieline(projectName) 
+			 createGoDeployPipieline(projectName)
+		 } catch (RuntimeException e) { io.err.println e.message}
+		 
 		 
 	 }
 	 
@@ -139,7 +143,8 @@ class CheckInCommand
 		 
 		  //non è possibile usare groovy keyword ne binding (es- package, class, ecc.)
 		  def binding = [ desc:     desc,
-							   project:  name]
+							   project:  name,
+								instance: '']
  
 		  def text = TemplateUtility.svnReadTemplate(io, 'check-in/micro.service')
 		  //io.out.println text
@@ -148,20 +153,32 @@ class CheckInCommand
 		  def engine   = new groovy.text.SimpleTemplateEngine()
 		  def template = engine.createTemplate(text).make(binding)
 		  
-		  // scrivo il file
-		  def path = "${ConfigUtility.MSHOME()}/coreos/services/${name}@.service"
+		  // scrivo l'unità systemd princiaple
+		  def path = "${ConfigUtility.MSHOME()}/work/systemd/${name}@.service"
 		  def file = TemplateUtility.createFile(path)
 		  TemplateUtility.write file, template.toString()
 		  io.out.println "Write file ${file}"
-		 	
-		  Utility.execute(io, [
-			  "${ConfigUtility.FLEETCTL()} submit $path"  ])
 		  
-		  	  
-		  /*(0..4).each { i ->
+		  //e le tre successive
+		  (2..4).each { i ->
+			  binding.instance =i
+			  path = "${ConfigUtility.MSHOME()}/work/systemd/${name}${i}@.service"
+			  file = TemplateUtility.createFile(path)
+			  TemplateUtility.write file, template.toString()
+			  io.out.println "Write file ${file}"
+		  }
+		  
+		  
+		  //Utility.execute(io, [
+			//  "${ConfigUtility.FLEETCTL()} submit $path"  ])
+		  
+			  
+	     /*(0..4).each { i ->
 			  def cmd = "ln -s ${path} ${ConfigUtility.MSHOME()}/coreos/services/ports/${name}@${port+i}.service" 
 			  Utility.execute(io, [cmd])
 		  }*/
+		  
+		  	  
 		
 	 }
 	 
@@ -189,15 +206,55 @@ class CheckInCommand
 		 def template = engine.createTemplate(text).make(binding)
 		 
 		 // scrivo il file
-		 def path = "/tmp/${binding.pipelineName}.json"
+		 def startDate = new Date()		 
+		 def path = "/tmp/${binding.pipelineName}-${startDate.format("yyyyMMdd'T'HHmmssSSS")}.json"
+		 
 		 def file = TemplateUtility.createFile(path)
 		 TemplateUtility.write file, template.toString()
 		 io.out.println "Write file ${file}"
 		 
+		 // Groovy do wrong executing this curl command:
+		 // it seems like it overwrite first -H with the second one :-(
+		 /*Utility.execute(io, [
+			 'curl -H \'Accept: application/vnd.go.cd.v1+json\' ' +
+          " -H 'Content-Type: application/json' " +
+			 " -X POST -d @$path ${ConfigUtility.GO()}/go/api/admin/pipelines "
+		 ])*/
+		 
+		 //workaround
 		 Utility.execute(io, [
-			 "curl -H 'Accept: application/vnd.go.cd.v1+json' -H 'Content-Type: application/json' -X POST -d @$path ${ConfigUtility.GO()}/go/api/admin/pipelines "
+			 "/anarchia/bin/add-pipeline.sh $path ${ConfigUtility.GO()}"
 		])
 		
 	 }
+	 
+	 void createGoDeployPipieline(String name) {
+		 //non è possibile usare groovy keyword ne binding (es- package, class, ecc.)
+		 def binding = [ pipelineName:   "$name-deploy",
+							  buildPipelineName:  "$name-build",
+							  projectName: name]
+
+		 def text = TemplateUtility.svnReadTemplate(io, 'check-in/deploy-pipeline.json')
+		 // io.out.println text
+	
+		 // sostituisco le variabili
+		 def engine   = new groovy.text.SimpleTemplateEngine()
+		 def template = engine.createTemplate(text).make(binding)
+		 
+		 // scrivo il file
+		 def startDate = new Date()
+		 def path = "/tmp/${binding.pipelineName}-${startDate.format("yyyyMMdd'T'HHmmssSSS")}.json"
+		 
+		 def file = TemplateUtility.createFile(path)
+		 TemplateUtility.write file, template.toString()
+		 io.out.println "Write file ${file}"
+				
+		 //workaround
+		 Utility.execute(io, [
+			 "/anarchia/bin/add-pipeline.sh $path ${ConfigUtility.GO()}"
+		])
+		
+	 }
+
 
 }
