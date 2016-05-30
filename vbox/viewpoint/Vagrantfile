@@ -11,23 +11,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
-  config.vm.network "private_network", ip: "192.168.50.4"
-  config.vm.network :private_network,  ip: "172.17.8.10"
-
+  #config.vm.network "private_network", ip: "192.168.50.4"
+  config.vm.network "private_network",  ip: "172.17.8.10"
 
   config.vm.provision :shell,  path: "bootstrap.sh"
   config.vm.provision :shell,  path: "setup-groovy.sh", privileged: false
   config.vm.provision :shell,  path: "setup-node.sh",   privileged: false
   config.vm.provision :shell,  path: "setup-logstash.sh",   privileged: false
   config.vm.provision :shell,  path: "setup-host.sh",   privileged: false
-  
-  
+  #fix for "stdin: is not a tty" on ubuntu 
+  config.vm.provision :shell, :inline => "sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile", privileged: false
+
   #config.vm.provision :shell, :inline => "/anarchia/bin/registry.viewpoint.sh", privileged: false, run: "always"
   config.vm.provision :shell, :inline => "/home/vagrant/elasticsearch-2.2.0/bin/elasticsearch &", privileged: false, run: "always"
   config.vm.provision :shell, :inline => "/anarchia/bin/services/turbine.sh", privileged: false, run: "always"
   config.vm.provision :shell, :inline => "/anarchia/bin/services/hystrix-dashboard.sh", privileged: false, run: "always"
   config.vm.provision :shell, :inline => "su go -c /anarchia/vbox/viewpoint/setup-ssh-agent.sh", privileged: true, run: "always"
- 
+
   config.vm.provider "virtualbox" do |v|
     v.memory = 5512
     v.cpus = 4
@@ -48,7 +48,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  #go
+  config.vm.network "forwarded_port", guest: 8153, host: 8153
+
+  #hystrix
+  config.vm.network "forwarded_port", guest: 7979, host: 7979
+  #turbine
+  config.vm.network "forwarded_port", guest: 8081, host: 8081
+
+  #elasticsearch
+  config.vm.network "forwarded_port", guest: 9200, host: 9200
+  #kibana
+  config.vm.network "forwarded_port", guest: 5601, host: 5601
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
