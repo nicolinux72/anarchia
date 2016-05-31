@@ -6,11 +6,9 @@
 .project
 .settings
 .springBeans
-.gradle
 build
 bin
 target/
 .idea
 *.iml
 .factorypath
-gradle

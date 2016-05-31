@@ -20,9 +20,10 @@ $image_version = "current"
 $enable_serial_logging = false
 $share_home = false
 $vm_gui = false
-$vm_memory = 2512
+$vm_memory = 2600
 $vm_cpus = 4
-$shared_folders = {'../../'      => '/anarchia'}
+#$shared_folders = {'/home/anarchia' => '/anarchia'}
+$shared_folders = {'../../' => '/anarchia'}
 $forwarded_ports = {}
 $new_discovery_url="https://discovery.etcd.io/new?size=#{$num_instances}"
 
