@@ -1,0 +1,19 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	ns1.anarchia.it. viewpoint.anarchia.it. (
+			      3		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+; name servers - NS records
+     IN      NS      ns1.anarchia.it.
+
+; PTR Records
+10.8   IN      PTR     ns1.anarchia.it.       ; 172.17.8.10
+101.8  IN      PTR     ami-01.anarchia.it.    ; 172.17.8.101
+102.8  IN      PTR     ami-01.anarchia.it.    ; 172.17.8.102
+103.8  IN      PTR     ami-01.anarchia.it.    ; 172.17.8.103
