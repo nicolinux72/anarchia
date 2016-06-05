@@ -1,0 +1,20 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "anarchia.it" {
+    type master;
+    file "/etc/bind/zones/db.anarchia.it"; # zone file path
+    //allow-transfer { 10.128.20.12; };    # ns2 private IP address - secondary
+};
+
+zone "8.17.172.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.8.17.172";  # 172.17.8.0/8 subnet
+    //allow-transfer { 10.128.20.12; };  # ns2 private IP address - secondary
+};
+
