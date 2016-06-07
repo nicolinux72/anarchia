@@ -1,0 +1,52 @@
+# anarchia µ-services: nicola santi 2013 
+# queste configurazioni valogno per ogni servizio
+anarchia:
+  welcome: Ordine Senza Potere
+
+
+spring:
+  rabbitmq:
+    host: ${COREOS_PUBLIC_IPV4:172.17.8.101}
+    port: 5672
+    username: guest
+    password: guest
+    #addresses: 
+  cloud:
+    bus:
+      refresh:
+        enabled: true
+      trace: 
+        enabled: true
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    aSGName: ANARCHIA  
+    #metadataMap:
+      #instanceId: ${spring.application.name}
+  client:
+    registryFetchIntervalSeconds: 5
+    instanceInfoReplicationIntervalSeconds: 5
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://172.17.8.101:8761/eureka/,http://172.17.8.102:8761/eureka/,http://172.17.8.103:8761/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        #isolation.strategy: THREAD
+        isolation.thread.timeoutInMilliseconds: 100
+      circuitBreaker:
+        requestVolumeThreshold: 10
+        sleepWindowInMilliseconds: 5000
+      metrics:
+        rollingStats.timeInMilliseconds: 10000
+      collapser:
+        StoreSubmission.maxRequestsInBatch: 1
+        StoreSubmission.requestCache.enabled: FALSE
+  threadpool:
+    default:
+      coreSize: 5
+      metrics:
+        rollingStats.timeInMilliseconds: 10000

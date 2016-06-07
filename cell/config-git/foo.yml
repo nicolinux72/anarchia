@@ -1,0 +1,14 @@
+#µ-services: queste configurazioni valogno per ogni servizio
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    metadataMap:
+      instanceId: ${spring.application.name}
+  client:
+    # Default values comes from org.springframework.cloud.netflix.eurek.EurekaClientConfigBean
+    registryFetchIntervalSeconds: 5
+    instanceInfoReplicationIntervalSeconds: 5
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://192.168.50.4:8761/eureka/
