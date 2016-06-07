@@ -8,6 +8,6 @@ eureka:
     hostname: localhost
     ipAddress: 127.0.0.1
 
-anarchia:
-  #welcome: Ordine Senza Potere
+#anarchia:
+#  welcome: Ordine Senza Potere
 

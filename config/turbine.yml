@@ -3,3 +3,8 @@ turbine:
     clusterConfig: anarchia
   appConfig: anarchia
   clusterNameExpression: aSGName
+
+spring:
+  rabbitmq:
+    host: ${COREOS_PUBLIC_IPV4:137.204.35.131}
+
