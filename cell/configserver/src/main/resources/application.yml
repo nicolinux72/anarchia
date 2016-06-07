@@ -14,10 +14,10 @@ spring:
     config:
       server:
         git:
-          #uri: https://github.com/spring-cloud-samples/config-repo
-          uri: file:/anarchia/cell/config
+          uri: https://github.com/nicolinux72/anarchia
+          searchPaths: config
+          #uri: file:/anarchia/cell/config
           basedir: target/config
-          #searchPaths: infrastruttura
   rabbitmq:
     host: ${COREOS_PUBLIC_IPV4:172.17.8.101}
     port: 5672
