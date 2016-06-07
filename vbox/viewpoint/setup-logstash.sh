@@ -3,7 +3,7 @@ curl -L -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/d
 tar -xvf elasticsearch-2.2.0.tar.gz
 
 cp  /anarchia/vbox/viewpoint/elasticsearch.yml /home/vagrant/elasticsearch-2.2.0/config/
-/home/vagrant/bin/elasticsearch &
+/home/vagrant/elasticsearch-2.2.0/bin/elasticsearch &
 
 wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 echo "deb http://packages.elastic.co/logstash/2.2/debian stable main" | sudo tee -a /etc/apt/sources.list
