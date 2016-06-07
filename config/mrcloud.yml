@@ -8,6 +8,11 @@ eureka:
     hostname: localhost
     ipAddress: 127.0.0.1
 
-#anarchia:
-#  welcome: Ordine Senza Potere
+anarchia:
+  welcome: are you talking to me?
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://137.204.35.131:8761/eureka/
 
