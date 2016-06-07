@@ -1,7 +1,7 @@
 # anarchia µ-services: nicola santi 2013 
 # queste configurazioni valogno per ogni servizio
 anarchia:
-  welcome: 0rdine Senza Potere
+  welcome: breccobrecco
 
 
 spring:
