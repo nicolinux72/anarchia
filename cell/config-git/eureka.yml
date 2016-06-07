@@ -1,0 +1,13 @@
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+  instance:
+    hostname: ${COREOS_PUBLIC_IPV4}
+    nonSecurePort: 8761
+    preferIpAddress: false
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    #renewalThresholdUpdateIntervalMs: 10 * 60 * 1000
+    peerEurekaNodesUpdateIntervalMs: 60000
+    peerEurekaStatusRefreshTimeIntervalMs: 60000

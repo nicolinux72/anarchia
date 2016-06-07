@@ -1,0 +1,13 @@
+eureka:
+  instance:
+    #instanceId: dottorzibbordi
+    nonSecurePort: 8080
+    preferIpAddress: false
+    #hostname: 192.168.50.4
+    #ipAddress: 192.168.50.4
+    hostname: pcmarco
+    ipAddress: 137.204.35.252
+
+anarchia:
+  welcome: Ordine Senza Potere
+

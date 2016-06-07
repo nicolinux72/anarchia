@@ -1,0 +1,5 @@
+turbine:
+  aggregator:
+    clusterConfig: anarchia
+  appConfig: anarchia
+  clusterNameExpression: aSGName

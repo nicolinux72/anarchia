@@ -1,0 +1,10 @@
+eureka:
+  instance:
+    nonSecurePort: ${DOCKER_EXTERNAL_PORT}
+    preferIpAddress: false
+    hostname: ${COREOS_PUBLIC_IPV4}
+    ipAddress: ${COREOS_PUBLIC_IPV4}
+
+anarchia:
+  welcome: Ordine Senza Potere!
+

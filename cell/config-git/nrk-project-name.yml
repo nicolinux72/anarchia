@@ -1,0 +1,9 @@
+eureka:
+  instance:
+    #instanceId: dottorzibbordi
+    nonSecurePort: 8080
+    preferIpAddress: false
+    #hostname: 192.168.50.4
+    #ipAddress: 192.168.50.4
+    hostname: viewpoint
+    ipAddress: 172.17.8.10
