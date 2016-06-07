@@ -11,6 +11,10 @@ eureka:
 anarchia:
   welcome: are you talking to me?
 
+spring:
+  rabbitmq:
+    host: ${COREOS_PUBLIC_IPV4:137.204.35.131}
+
 eureka:
   client:
     serviceUrl:
