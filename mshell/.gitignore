@@ -13,4 +13,3 @@ target/
 .idea
 *.iml
 .factorypath
-gradle
