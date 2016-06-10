@@ -13,3 +13,6 @@ sudo service bind9 restart
 
 #sudo vi /etc/resolvconf/resolv.conf.d/head
 #sudo resolvconf -u
+
+#search anarchia.it  # your private domain
+#nameserver 172.17.8.10 # ns1 private IP address
