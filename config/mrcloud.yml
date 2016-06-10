@@ -7,7 +7,14 @@ eureka:
     #ipAddress: 192.168.50.4
     hostname: localhost
     ipAddress: 127.0.0.1
+  client:
+    serviceUrl:
+      defaultZone: http://137.204.35.131:8761/eureka/
 
-#anarchia:
-#  welcome: Ordine Senza Potere
+anarchia:
+  welcome: are you talking to me?
+
+spring:
+  rabbitmq:
+    host: ${COREOS_PUBLIC_IPV4:137.204.35.131}
 
