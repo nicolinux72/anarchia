@@ -6,7 +6,7 @@ Wants=configserver.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="IMAGE=anarchia-registry:5000/eureka:1.1.0-SNAPSHOT"
+Environment="IMAGE=docker-registry.anarchia.loc:5000/eureka:1.1.0-SNAPSHOT"
 Environment="CONTAINER=eureka"
 
 TimeoutStartSec=0

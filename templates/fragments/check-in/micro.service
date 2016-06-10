@@ -6,7 +6,7 @@ Wants=configserver.service
 
 [Service]
 EnvironmentFile=/etc/environment
-Environment="IMAGE=anarchia-registry:5000/${project}:%i"
+Environment="IMAGE=docker-registry.anarchia.loc:5000/${project}:%i"
 Environment="CONTAINER=${project}${instance}"
 
 TimeoutStartSec=0

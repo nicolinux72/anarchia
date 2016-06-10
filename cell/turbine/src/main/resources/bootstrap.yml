@@ -3,4 +3,4 @@ spring:
     name: turbine
   cloud:
     config:
-      uri: http://${COREOS_PUBLIC_IPV4:172.17.8.101}:8888
+      uri: http://${COREOS_PUBLIC_IPV4:137.204.35.131}:8888

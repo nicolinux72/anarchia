@@ -28,7 +28,7 @@ ext {
     description = 'Anarchia µ-service shell' 
     version='1.0.1-SNAPSHOT'
     sourceEncoding='UTF-8'
-    dockerRegistry = "anarchia-registry:5000"
+    dockerRegistry = "docker-registry.anarchia.loc:5000"
 }
 
 docker {

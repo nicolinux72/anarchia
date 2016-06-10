@@ -27,7 +27,7 @@ ext {
     description = 'Zuul Reverse Proxy project' 
     version='1.1.0-SNAPSHOT'
     sourceEncoding='UTF-8'
-    dockerRegistry = "anarchia-registry:5000"
+    dockerRegistry = "docker-registry.anarchia.loc:5000"
 }
 
 docker {

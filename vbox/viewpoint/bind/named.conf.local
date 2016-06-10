@@ -6,9 +6,9 @@
 // organization
 //include "/etc/bind/zones.rfc1918";
 
-zone "anarchia.it" {
+zone "anarchia.loc" {
     type master;
-    file "/etc/bind/zones/db.anarchia.it"; # zone file path
+    file "/etc/bind/zones/db.anarchia.loc"; # zone file path
     //allow-transfer { 10.128.20.12; };    # ns2 private IP address - secondary
 };
 

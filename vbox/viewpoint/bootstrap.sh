@@ -66,8 +66,8 @@ chmod o+r /anarchia/certs/id_rsa_anarchia_go
 
 
 # aggiungo le chiavi per il docker registry
-mkdir -p /etc/docker/certs.d/anarchia-registry:5000
-cp /anarchia/certs/domain.crt /etc/docker/certs.d/anarchia-registry:5000/ca.crt
+mkdir -p /etc/docker/certs.d/docker-registry.anarchia.loc:5000
+cp /anarchia/certs/domain.crt /etc/docker/certs.d/docker-registry.anarchia.loc:5000/ca.crt
 
 #pagina di cortesia
 cp /anarchia/vbox/viewpoint/index.html /var/www/html

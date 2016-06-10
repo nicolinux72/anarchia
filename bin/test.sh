@@ -1,6 +1,6 @@
 #!/bin/bash
 
 while true; do
-	curl localhost:8080/do &
-	sleep 0.001
+	curl localhost:8080/localSlow &
+	sleep 0.01
 done

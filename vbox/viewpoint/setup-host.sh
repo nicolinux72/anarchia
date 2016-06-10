@@ -30,8 +30,8 @@ sudo bash -c "echo 172.17.8.101 ami-01 >> /etc/hosts"
 sudo bash -c "echo 172.17.8.102 ami-02 >> /etc/hosts"
 sudo bash -c "echo 172.17.8.103 ami-03 >> /etc/hosts"
 
-#sudo bash -c "echo 172.17.8.10 anarchia-registry >> /etc/hosts"
-sudo bash -c "echo 10.0.2.2 anarchia-registry >> /etc/hosts"
+#sudo bash -c "echo 172.17.8.10 docker-registry.anarchia.loc >> /etc/hosts"
+sudo bash -c "echo 10.0.2.2 docker-registry.anarchia.loc >> /etc/hosts"
 
 
 echo add ssh configs

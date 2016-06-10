@@ -7,14 +7,14 @@ echo config anarchia coreos node
 touch /etc/hosts
 
 #docker registry gira sull'host
-bash -c "echo 10.0.2.2 anarchia-registry >> /etc/hosts"
+bash -c "echo 10.0.2.2 docker-registry.anarchia.loc >> /etc/hosts"
 
 #docker registry gira su viewport
-#bash -c "echo 172.17.8.10 anarchia-registry >> /etc/hosts"
+#bash -c "echo 172.17.8.10 docker-registry.anarchia.loc >> /etc/hosts"
 
 
-sudo mkdir -p /etc/docker/certs.d/anarchia-registry:5000
-sudo cp /anarchia/certs/domain.crt /etc/docker/certs.d/anarchia-registry:5000/ca.crt
+sudo mkdir -p /etc/docker/certs.d/docker-registry.anarchia.loc:5000
+sudo cp /anarchia/certs/domain.crt /etc/docker/certs.d/docker-registry.anarchia.loc:5000/ca.crt
 
 mkdir -p /home/core/log
                  
@@ -26,9 +26,9 @@ mkdir -p /home/core/log
 #docker run -d -p 5000:5000 --restart=always --name registry -v /anarchia/certs:/certs   -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt   -e REGISTRY_HTTP_TLSEY=/certs/domain.key registry:2
 
 # questo per la macchina di sviluppo, per usare il registro privato
-#sudo mkdir -p /etc/docker/certs.d/anarchia-registry:5000
-#sudo cp /anarchia/certs/domain.crt /etc/docker/certs.d/anarchia-registry:5000/ca.crt
+#sudo mkdir -p /etc/docker/certs.d/docker-registry.anarchia.loc:5000
+#sudo cp /anarchia/certs/domain.crt /etc/docker/certs.d/docker-registry.anarchia.loc:5000/ca.crt
 
 # aggiungo un alias per il registry
-#bash -c "echo  192.168.50.1 anarchia-registry >> /etc/hosts"
+#bash -c "echo  192.168.50.1 docker-registry.anarchia.loc >> /etc/hosts"
 
