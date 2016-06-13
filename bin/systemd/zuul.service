@@ -17,10 +17,7 @@ ExecStartPre=-/usr/bin/docker  rm   $CONTAINER
 ExecStartPre=/usr/bin/docker   pull $IMAGE
 
 ExecStart=/usr/bin/docker      run   --name $CONTAINER -p 8765:8765  \
-                 -h %H \
-                 --add-host ami-01:172.17.8.101 \
-                 --add-host ami-02:172.17.8.102 \
-                 --add-host ami-03:172.17.8.103 \
+                  -h %H \
                  -v  /home/core/log:/log \
                  -e "logging.file=/log/zuul-1.1.0-SNAPSHOT@8761.log"   \
                  -e "spring.profiles.active=dev" \

@@ -5,7 +5,7 @@ anarchia:
 
 spring:
   rabbitmq:
-    host: ${COREOS_PUBLIC_IPV4:172.17.8.101}
+    host: ${COREOS_PUBLIC_IPV4:ami-01.anarchia.loc}
     port: 5672
     username: guest
     password: guest
