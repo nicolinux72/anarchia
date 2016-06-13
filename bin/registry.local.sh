@@ -1,5 +1,5 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-export ANARCHIADIR=$DIR/../..
+export ANARCHIADIR=$DIR/..
 if [ -d "/anarchia" ]
 then
 	ANARCHIADIR=/anarchia

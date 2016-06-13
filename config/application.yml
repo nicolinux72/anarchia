@@ -28,7 +28,7 @@ eureka:
     instanceInfoReplicationIntervalSeconds: 5
     initialInstanceInfoReplicationIntervalSeconds: 5
     serviceUrl:
-      defaultZone: http://172.17.8.101:8761/eureka/,http://172.17.8.102:8761/eureka/,http://172.17.8.103:8761/eureka/
+      defaultZone: http://ami-01.anarchia.loc:8761/eureka/,http://ami-02.anarchia.loc:8761/eureka/,http://ami-03.anarchia.loc:8761/eureka/
 
 hystrix:
   command:
