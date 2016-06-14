@@ -24,7 +24,12 @@ $vm_memory = 2600
 $vm_cpus = 4
 #$shared_folders = {'/home/anarchia' => '/anarchia'}
 $shared_folders = {'../../' => '/anarchia'}
-$forwarded_ports = {}
+$forwarded_ports = { 22 => 2122,
+                     8888 => 8888, #configserver
+                     8080 => 8080, #rabbitMQ WEB
+                     8761 => 8761, #eureka,
+                     4369 => 4369  #rabbit MQ
+                   }
 $new_discovery_url="https://discovery.etcd.io/new?size=#{$num_instances}"
 
 # Attempt to apply the deprecated environment variable NUM_INSTANCES to
