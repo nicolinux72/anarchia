@@ -18,6 +18,7 @@ ExecStartPre=/usr/bin/docker   pull $IMAGE
 ExecStart=/usr/bin/docker      run  --hostname %H --name $CONTAINER \
                  -p 8080:15672 -p 4369:4369 -p 5671:5671 -p 5672:5672 -p 25672:25672  \
                  -e RABBITMQ_ERLANG_COOKIE='tokensupersegreto' \
+                 -e RABBITMQ_USE_LONGNAME=true \
                  $IMAGE
 
 ExecStop=/usr/bin/docker       stop $CONTAINER
