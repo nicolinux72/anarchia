@@ -40,7 +40,7 @@ buildscript {
 
 dependencyManagement {
     imports { 
-        mavenBom "org.springframework.cloud:spring-cloud-starter-parent:Brixton.BUILD-SNAPSHOT" 
+        mavenBom "org.springframework.cloud:spring-cloud-starter-parent:Brixton.RELEASE" 
     }
 }
 
@@ -96,11 +96,7 @@ buildImage.doLast {
 
 repositories {
     jcenter()
-    maven { url 'http://repo.spring.io/snapshot' }
     maven { url 'https://repo.spring.io/release/' }
-    maven { url "http://repo.spring.io/libs-snapshot-local" }
-    maven { url "http://repo.spring.io/libs-milestone-local" }
-    maven { url "http://repo.spring.io/libs-release-local" }
     mavenCentral()
 }
 

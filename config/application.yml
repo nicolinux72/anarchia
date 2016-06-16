@@ -1,7 +1,7 @@
 # anarchia µ-services: nicola santi 2013 
 # queste configurazioni valogno per ogni servizio
 anarchia:
-  welcome: un pò di slepito
+  welcome: anarchia µ-services
 
 spring:
   rabbitmq:

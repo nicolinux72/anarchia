@@ -20,7 +20,7 @@ $image_version = "current"
 $enable_serial_logging = false
 $share_home = false
 $vm_gui = false
-$vm_memory = 2600
+$vm_memory = 3500
 $vm_cpus = 4
 #$shared_folders = {'/home/anarchia' => '/anarchia'}
 $shared_folders = {'../../' => '/anarchia'}
@@ -28,6 +28,7 @@ $forwarded_ports = { 22 => 2122,
                      8888 => 8888, #configserver
                      8080 => 8080, #rabbitMQ WEB
                      8761 => 8761, #eureka,
+                     8765 => 8765, #zuul,
                      4369 => 4369  #rabbit MQ
                    }
 $new_discovery_url="https://discovery.etcd.io/new?size=#{$num_instances}"
