@@ -1,20 +1,19 @@
 eureka:
   instance:
-    #instanceId: dottorzibbordi
-    nonSecurePort: 8080
-    preferIpAddress: false
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}:${server.port}
+    #nonSecurePort: 8080
+    #preferIpAddress: false
     #hostname: 192.168.50.4
     #ipAddress: 192.168.50.4
-    hostname: localhost
-    ipAddress: 127.0.0.1
-  client:
-    serviceUrl:
-      defaultZone: http://137.204.35.131:8761/eureka/
+    #hostname: localhost
+    #ipAddress: 127.0.0.1
+  #client:
+    #serviceUrl:
+      #defaultZone: http://137.204.35.131:8761/eureka/
 
 anarchia:
   welcome: are you talking to me?
 
-spring:
-  rabbitmq:
-    host: ${COREOS_PUBLIC_IPV4:137.204.35.131}
-
+#spring:
+  #rabbitmq:
+    #host: ${COREOS_PUBLIC_IPV4:137.204.35.131}
