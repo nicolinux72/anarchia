@@ -2,26 +2,26 @@
 ; BIND data file for local loopback interface
 ;
 $TTL	604800
-@	IN	SOA	ns1.anarchia.loc. viewpoint.anarchia.loc. (
+$ORIGIN anarchia.loc.
+@	IN	SOA	ns1.anarchia.loc. admin.anarchia.loc. (
 			      3		; Serial
-			 604800		; Refresh
-			  86400		; Retry
-			2419200		; Expire
-			 604800 )	; Negative Cache TTL
+			     3h		; Refresh
+			    30m		; Retry
+			     3w		; Expire
+			     1h  )  ; Negative Cache TTL
 ;
-; name servers - NS records
-     IN      NS      ns1.anarchia.loc.
-
-; name servers - A records
-ns1          IN      A       172.17.8.10
+; name servers - NS & A records
+                     IN  NS   ns1
+ns1                  IN  A    172.17.8.1
 
 ; 172.17.8.0/8 - A records
-ami-01.anarchia.loc.        IN      A      172.17.8.101
-ami-02.anarchia.loc.        IN      A      172.17.8.102
-ami-03.anarchia.loc.        IN      A      172.17.8.103
-docker-registry.anarchia.loc.      IN      A       172.17.8.1
-hystrix-dashboard.anarchia.loc.    IN      A       172.17.8.10
-turbine.anarchia.loc.              IN      A       172.17.8.10
-go.anarchia.loc.                   IN      A       172.17.8.10
-kibana.anarchia.loc.               IN      A       172.17.8.10
-elasticsearch.anarchia.loc.        IN      A       172.17.8.10
+ami-01               IN  A    172.17.8.101
+ami-02               IN  A    172.17.8.102
+ami-03               IN  A    172.17.8.103
+docker-registry      IN  A    172.17.8.1
+hystrix-dashboard    IN  A    172.17.8.10
+turbine              IN  A    172.17.8.10
+go                   IN  A    172.17.8.10
+kibana               IN  A    172.17.8.10
+elasticsearch        IN  A    172.17.8.10
+;elasticsearch       IN  A    172.17.8.10

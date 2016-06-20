@@ -2,24 +2,24 @@
 ; BIND reverse data file for local loopback interface
 ;
 $TTL	604800
-@	IN	SOA	ns1.anarchia.loc. viewpoint.anarchia.loc. (
+@	IN	SOA	ns1.anarchia.loc. admin.anarchia.loc. (
 			      4		; Serial
-			 604800		; Refresh
-			  86400		; Retry
-			2419200		; Expire
-			 604800 )	; Negative Cache TTL
+			     3h		; Refresh
+			    30m		; Retry
+			     3w		; Expire
+			     1h  )	; Negative Cache TTL
 ;
 ; name servers - NS records
      IN      NS      ns1.anarchia.loc.
 
 ; PTR Records
-10.8   IN      PTR     ns1.anarchia.loc.       ; 172.17.8.10
-101.8  IN      PTR     ami-01.anarchia.loc.    ; 172.17.8.101
-102.8  IN      PTR     ami-02.anarchia.loc.    ; 172.17.8.102
-103.8  IN      PTR     ami-03.anarchia.loc.    ; 172.17.8.103
-1.8   IN      PTR     docker-registry.anarchia.loc.     ; 172.17.8.1
-10.8  IN      PTR     hystrix-dashboard.anarchia.loc.   ; 172.17.8.10
-10.8  IN      PTR     turbine.anarchia.loc.             ; 172.17.8.10
-10.8  IN      PTR     go.anarchia.loc.                  ; 172.17.8.10
-10.8  IN      PTR     kibana.anarchia.loc.              ; 172.17.8.10
-10.8  IN      PTR     elasticsearch.anarchia.loc.       ; 172.17.8.10
+10   IN  PTR    ns1.anarchia.loc.       		  ; 172.17.8.10
+101  IN  PTR    ami-01.anarchia.loc.    		  ; 172.17.8.101
+102  IN  PTR    ami-02.anarchia.loc.    		  ; 172.17.8.102
+103  IN  PTR    ami-03.anarchia.loc.    		  ; 172.17.8.103
+1    IN  PTR    docker-registry.anarchia.loc.     ; 172.17.8.1
+10   IN  PTR    hystrix-dashboard.anarchia.loc.   ; 172.17.8.10
+10   IN  PTR    turbine.anarchia.loc.             ; 172.17.8.10
+10   IN  PTR    go.anarchia.loc.                  ; 172.17.8.10
+10   IN  PTR    kibana.anarchia.loc.              ; 172.17.8.10
+10   IN  PTR    elasticsearch.anarchia.loc.       ; 172.17.8.10
