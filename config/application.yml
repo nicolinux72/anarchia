@@ -27,8 +27,13 @@ eureka:
     registryFetchIntervalSeconds: 5
     instanceInfoReplicationIntervalSeconds: 5
     initialInstanceInfoReplicationIntervalSeconds: 5
-    serviceUrl:
-      defaultZone: http://ami-01.anarchia.loc:8761/eureka/,http://ami-02.anarchia.loc:8761/eureka/,http://ami-03.anarchia.loc:8761/eureka/
+    #serviceUrl:
+    #  defaultZone: http://ami-01.anarchia.loc:8761/eureka/,http://ami-02.anarchia.loc:8761/eureka/,http://ami-03.anarchia.loc:8761/eureka/
+    useDnsForFetchingServiceUrls: true
+    eurekaServerPort: 8761
+    eurekaServerURLContext: eureka
+    eurekaServerDNSName: anarchia.loc
+    region: regione
 
 hystrix:
   command:

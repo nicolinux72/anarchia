@@ -25,3 +25,5 @@ go                   IN  A    172.17.8.10
 kibana               IN  A    172.17.8.10
 elasticsearch        IN  A    172.17.8.10
 ;elasticsearch       IN  A    172.17.8.10
+txt.regione          IN  TXT  "zona.anarchia.loc"
+txt.zona             IN  TXT  "ami-01.anarchia.loc" "ami-02.anarchia.loc" "ami-03.anarchia.loc"
