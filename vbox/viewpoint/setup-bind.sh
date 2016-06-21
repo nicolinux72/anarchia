@@ -11,8 +11,11 @@ sudo mkdir /etc/bind/zones
 sudo cp /vagrant/bind/db.* /etc/bind/zones/
 sudo service bind9 restart
 
-#sudo vi /etc/resolvconf/resolv.conf.d/head
-#sudo resolvconf -u
+sudo cat >> /etc/resolvconf/resolv.conf.d/head << EOM
 
-#search anarchia.loc  # your private domain
-#nameserver 172.17.8.10 # ns1 private IP address
+search anarchia.loc    # anarchia private domain
+nameserver 172.17.8.10 # ns1 private IP address
+
+EOM
+
+sudo resolvconf -u

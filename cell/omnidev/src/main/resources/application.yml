@@ -1,0 +1,47 @@
+server:
+  port: 8880
+
+eureka:
+  dashboard:
+    path: /eureka-dashboard
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    aSGName: ANARCHIA  
+    #metadataMap:
+      #instanceId: ${spring.application.name}
+  client:
+    registryFetchIntervalSeconds: 5
+    instanceInfoReplicationIntervalSeconds: 5
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    #serviceUrl:
+    #  defaultZone: http://ami-01.anarchia.loc:8761/eureka/,http://ami-02.anarchia.loc:8761/eureka/,http://ami-03.anarchia.loc:8761/eureka/
+    useDnsForFetchingServiceUrls: true
+    eurekaServerPort: 8761
+    eurekaServerURLContext: eureka
+    eurekaServerDNSName: anarchia.loc
+    region: regione
+
+
+management:
+  context-path: /admin
+
+logging:
+  level:
+    com.netflix.discovery: 'OFF'
+    org.springframework.cloud: 'DEBUG'
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/nicolinux72/anarchia
+          searchPaths: config
+          #uri: file:/anarchia/cell/config
+          basedir: target/config
+  rabbitmq:
+    host: ${COREOS_PUBLIC_IPV4:172.17.8.101}
+    port: 5672
+    username: guest
+    password: guest
+    #addresses: 
