@@ -1,0 +1,14 @@
+./gradlew bootRun
+docker run  -p 192.168.50.4:8761:8761 springcloud/eureka
+mvn clean spring-boot:run 
+./gradlew clean build mkDocker
+
+docker push ami-01:5000/foobar:13.0
+
+  -v /anarchia/registry:/var/lib/registry \
+          
+
+Elenco delle cartelle
+registry    la cartella in sharing per il registro privato di docker
+certs       i certificati usati dal private docker registry
+script      programmi di avvio
