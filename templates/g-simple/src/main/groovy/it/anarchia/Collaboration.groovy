@@ -27,18 +27,18 @@ class Collaboration {
 		Thread.sleep(t * 10)
 		if (t > 10 )
 		  throw new RuntimeException('oops');
-		
+
 		return "work!"
 	}
-	
-	@Autowired
-	private RestTemplate restTemplate;
-	
+
+	//@Autowired
+	private RestTemplate restTemplate = new RestTemplate();
+
 	@HystrixCommand(fallbackMethod = "defaultStores")
 	public String remoteCall() {
 		restTemplate.getForObject("http://nrk-project-name/welcome", String.class)
 	}
-	
+
 	public String defaultStores() {
 		return "*** fallbackMethod ***";
   }
